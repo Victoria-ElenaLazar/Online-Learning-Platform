@@ -22,7 +22,7 @@ class EnrollmentsRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Enrollments[] Returns an array of Enrollments objects
+//     * @return EnrollmentsFixtures[] Returns an array of EnrollmentsFixtures objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class EnrollmentsRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Enrollments
+//    public function findOneBySomeField($value): ?EnrollmentsFixtures
 //    {
 //        return $this->createQueryBuilder('e')
 //            ->andWhere('e.exampleField = :val')

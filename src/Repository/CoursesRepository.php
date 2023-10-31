@@ -22,7 +22,7 @@ class CoursesRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Courses[] Returns an array of Courses objects
+//     * @return CoursesFixtures[] Returns an array of CoursesFixtures objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -36,7 +36,7 @@ class CoursesRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Courses
+//    public function findOneBySomeField($value): ?CoursesFixtures
 //    {
 //        return $this->createQueryBuilder('c')
 //            ->andWhere('c.exampleField = :val')
