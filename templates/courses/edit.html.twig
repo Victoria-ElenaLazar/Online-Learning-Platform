@@ -3,11 +3,16 @@
 {% block title %}Edit Courses{% endblock %}
 
 {% block body %}
-    <h1>Edit Courses</h1>
+    <div class="container" style="margin-top: 200px;">
+        {{ include('courses/_form.html.twig', {'button_label': 'Update'}) }}
 
-    {{ include('courses/_form.html.twig', {'button_label': 'Update'}) }}
+        <div class="d-inline-block" style="margin-top: 30px; margin-bottom: 30px; margin-right: 10px;">
+        <a href="{{ path('app_courses_index') }}">back to list</a>
+        </div>
 
-    <a href="{{ path('app_courses_index') }}">back to list</a>
+        <div class="d-inline-block" style="margin-top: 30px; margin-bottom: 30px; margin-right: 10px;">
+            {{ include('courses/_delete_form.html.twig') }}
+        </div>
 
-    {{ include('courses/_delete_form.html.twig') }}
+    </div>
 {% endblock %}

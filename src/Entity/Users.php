@@ -2,17 +2,18 @@
 
 namespace App\Entity;
 
+use App\Repository\UsersRepository;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\UsersRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UsersRepository::class)]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+#[UniqueEntity(fields: ['email'], message: 'This email already in use!')]
 class Users implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -31,18 +32,24 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
     #[ORM\Column]
     private ?string $email = null;
+
     #[ORM\Column(name: "created_at")]
     private ?DateTimeImmutable $createdAt = null;
-    #[ORM\Column(name: "updated_at")]
+
+    #[ORM\Column(name: "updated_at", nullable: true)]
     private ?DateTimeImmutable $updatedAt = null;
 
-    #[ORM\OneToMany(mappedBy: 'instructors', targetEntity: Courses::class)]
+    #[ORM\OneToMany(mappedBy: 'instructor', targetEntity: Courses::class)]
     private Collection $courses;
 
-    #[ORM\OneToMany(mappedBy: 'users', targetEntity: Enrollments::class)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Enrollments::class)]
     private Collection $enrollments;
+
+//    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+//    private ?Profile $profile = null;
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
@@ -78,7 +85,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string)$this->username;
+        return (string) $this->username;
     }
 
     /**
@@ -156,7 +163,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->courses->contains($course)) {
             $this->courses->add($course);
-            $course->setInstructors($this);
+            $course->setInstructor($this);
         }
 
         return $this;
@@ -166,8 +173,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->courses->removeElement($course)) {
             // set the owning side to null (unless already changed)
-            if ($course->getInstructors() === $this) {
-                $course->setInstructors(null);
+            if ($course->getInstructor() === $this) {
+                $course->setInstructor(null);
             }
         }
 
@@ -186,7 +193,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if (!$this->enrollments->contains($enrollment)) {
             $this->enrollments->add($enrollment);
-            $enrollment->setUsers($this);
+            $enrollment->setUser($this);
         }
 
         return $this;
@@ -196,8 +203,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->enrollments->removeElement($enrollment)) {
             // set the owning side to null (unless already changed)
-            if ($enrollment->getUsers() === $this) {
-                $enrollment->setUsers(null);
+            if ($enrollment->getUser() === $this) {
+                $enrollment->setUser(null);
             }
         }
 
@@ -225,4 +232,21 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+//    public function getProfile(): ?Profile
+//    {
+//        return $this->profile;
+//    }
+//
+//    public function setProfile(Profile $profile): static
+//    {
+//        // set the owning side of the relation if necessary
+//        if ($profile->getUser() !== $this) {
+//            $profile->setUser($this);
+//        }
+//
+//        $this->profile = $profile;
+//
+//        return $this;
+//    }
 }

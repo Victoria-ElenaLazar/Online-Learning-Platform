@@ -1,0 +1,40 @@
+<div class="container" style="margin-top: 200px;">
+    <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="course card">
+                <div class="course_image">
+                    <img src="{{ asset('images/course_3.jpg') }}" alt="" class="card-img-top">
+                </div>
+                <div class="card-body">
+                    <div class="course_header d-flex flex-row align-items-center justify-content-between">
+                        <div class="course_title">
+                            {% if is_granted('ROLE_INSTRUCTOR') %}
+                            <h3><a href="{{ path('app_lessons_show', {'id': lesson.id}) }}">{{ lesson.title }}</a></h3>
+                            <h3><a href="{{ path('app_lessons_show', {'id': lesson.id}) }}">Show content</a></h3>
+                        </div>
+                        <div class="course_subtitle">
+                            <h3><a href="{{ path('app_lessons_edit', {'id': lesson.id}) }}">
+                                    <button class="btn btn-warning">Update</button></a></h3>
+                        </div>
+                    </div>
+                    {% else %}
+                        <div class="course_subtitle">
+                            <h3><a href="{{ path('app_lessons_show', {'id': lesson.id}) }}">
+                                <button class="btn btn-primary">{{ label }}</button></a></h3>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="text-center p-4 pb-3">
+                    <h5 class="mb-4">{{ lesson.title }}</h5>
+                    {% for enrollement in app.user.enrollments %}
+                        {% for progress in enrollement.progresses %}
+                            {% if progress.status == 1 and lesson.id == progress.lessons.id %}
+                                <h6 class="text-danger mt-n3">COMPLETED</h6>
+                            {% endif %}
+                        {% endfor %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -3,41 +3,72 @@
 {% block title %}Courses index{% endblock %}
 
 {% block body %}
-    <h1>Courses index</h1>
+    <div class="container" style="margin-top: 200px;">
+        <div class="row">
+            {% for course in courses %}
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="course card">
+                        <div class="course_image">
+                            <img src="{{ asset('images/course_4.jpg') }}" alt="" class="card-img-top">
+                        </div>
+                        <div class="card-body">
+                            <div class="course_header d-flex flex-row align-items-center justify-content-between">
+                                <div class="course_tag">
+                                    <a href="#">Featured</a>
+                                </div>
+                                <div class="course_price">
+                                    Price: <span>$135</span>
+                                </div>
+                            </div>
+                            <div class="course_title">
+                                <h3><a href="{{ path('app_courses_show', {'id': course.id}) }}">{{ course.title }}</a></h3>
+                            </div>
+                            <div class="course_subtitle">
+                                <h3><a href="{{ path('app_courses_show', {'id': course.id}) }}">Read More</a></h3>
+                            </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>InstructorId</th>
-                <th>Title</th>
-                <th>Description</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for course in courses %}
-            <tr>
-                <td>{{ course.id }}</td>
-                <td>{{ course.instructorId }}</td>
-                <td>{{ course.title }}</td>
-                <td>{{ course.description }}</td>
-                <td>{{ course.createdAt ? course.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ course.updatedAt ? course.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('app_courses_show', {'id': course.id}) }}">show</a>
-                    <a href="{{ path('app_courses_edit', {'id': course.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+                            {% if not is_granted('ROLE_INSTRUCTOR') %}
+                                {% set found = false %}
+                                {% for enrollment in course.enrollments %}
+                                    {% if user.id == enrollment.user.id %}
+                                        {% set found = true %}
+                                        <div class="course_subtitle">
+                                            <h3><a href="{{ path('app_courses_show', {'id': course.id}) }}">Resume</a></h3>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                                {% if not found %}
+                                    <a href="{{ path('app_courses_enroll', {'id': course.id}) }}"
+                                       class="btn btn-primary btn-sm mt-2">Join Now</a>
+                                {% endif %}
+                            {% else %}
+                                <a href="{{ path('app_courses_edit', {'id': course.id}) }}"
+                                   class="btn btn-primary btn-sm mt-2">Edit</a>
+                            {% endif %}
 
-    <a href="{{ path('app_courses_new') }}">Create new</a>
+                            <div class="course_text mt-3">{{ course.description }}</div>
+                        </div>
+                        <div class="card-footer d-flex align-items-center justify-content-between">
+                            <div class="course_author d-flex align-items-center">
+                                <div class="course_author_image">
+                                    <img src="{{ asset('images/teacher_3.jpg') }}" alt="Author Image" class="rounded-circle" style="width: 40px; height: 40px;">
+                                </div>
+                                <div class="course_author_name ml-2">{{ course.instructor.username }}</div>
+                            </div>
+                            <div class="course_details">
+                                <div class="fa fa-clock-o mr-2">{{ course.hours }}:{{ course.minutes }} Hrs</div>
+                                <div class="fa fa-user">{{ course.createdAt ? course.createdAt|date('d.m.Y') : '' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12"><h5>No records found</h5></div>
+            {% endfor %}
+        </div>
+
+        {% if is_granted('ROLE_INSTRUCTOR') %}
+            <a class="mt-3 btn btn-primary" href="{{ path('app_courses_new') }}">Create new</a>
+        {% endif %}
+    </div>
 {% endblock %}

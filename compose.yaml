@@ -12,7 +12,7 @@ services:
       - 'MYSQL_USER=${MARIADB_USER}'
       - 'MYSQL_PASSWORD=${MARIADB_PASSWORD}'
     ports:
-      - '8003:3306'
+      - '3306:3306'
 
   webserver:
     image: 'nginx:alpine'
@@ -22,7 +22,7 @@ services:
       - '.:/application'
       - './phpdocker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
     ports:
-      - '1001:80'
+      - '8000:80'
 
   php-fpm:
     build: phpdocker/php-fpm

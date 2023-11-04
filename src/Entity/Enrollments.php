@@ -15,27 +15,24 @@ class Enrollments
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(name: "student_id")]
-    private ?int $studentId = null;
-
-    #[ORM\Column(name: "course_id")]
-    private ?int $courseId = null;
-
     #[ORM\Column(name: "enrollment_date")]
     private ?\DateTimeImmutable $enrollmentDate = null;
 
-    #[ORM\ManyToOne(inversedBy: 'enrollments')]
-    private ?Users $users = null;
+    #[ORM\ManyToOne(targetEntity: Users::class, inversedBy: 'enrollments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Users $user = null;
 
-    #[ORM\ManyToOne(inversedBy: 'enrollments')]
-    private ?Courses $courses = null;
+    #[ORM\ManyToOne(targetEntity: Courses::class, inversedBy: 'enrollments')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Courses $course = null;
 
-    #[ORM\OneToMany(mappedBy: 'enrollments', targetEntity: Progress::class)]
-    private Collection $progress;
+    #[ORM\OneToMany(mappedBy: 'enrollment', targetEntity: Progress::class)]
+    private Collection $progresses;
 
     public function __construct()
     {
-        $this->progress = new ArrayCollection();
+        $this->progresses = new ArrayCollection();
+        $this->enrollmentDate = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -46,30 +43,6 @@ class Enrollments
     public function setId(int $id): static
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    public function getStudentId(): ?int
-    {
-        return $this->studentId;
-    }
-
-    public function setStudentId(int $studentId): static
-    {
-        $this->studentId = $studentId;
-
-        return $this;
-    }
-
-    public function getCourseId(): ?int
-    {
-        return $this->courseId;
-    }
-
-    public function setCourseId(int $courseId): static
-    {
-        $this->courseId = $courseId;
 
         return $this;
     }
@@ -86,26 +59,26 @@ class Enrollments
         return $this;
     }
 
-    public function getUsers(): ?Users
+    public function getUser(): ?Users
     {
-        return $this->users;
+        return $this->user;
     }
 
-    public function setUsers(?Users $users): static
+    public function setUser(?Users $user): static
     {
-        $this->users = $users;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getCourses(): ?Courses
+    public function getCourse(): ?Courses
     {
-        return $this->courses;
+        return $this->course;
     }
 
-    public function setCourses(?Courses $courses): static
+    public function setCourse(?Courses $course): static
     {
-        $this->courses = $courses;
+        $this->course = $course;
 
         return $this;
     }
@@ -113,16 +86,16 @@ class Enrollments
     /**
      * @return Collection<int, Progress>
      */
-    public function getProgress(): Collection
+    public function getProgresses(): Collection
     {
-        return $this->progress;
+        return $this->progresses;
     }
 
     public function addProgress(Progress $progress): static
     {
-        if (!$this->progress->contains($progress)) {
-            $this->progress->add($progress);
-            $progress->setEnrollments($this);
+        if (!$this->progresses->contains($progress)) {
+            $this->progresses->add($progress);
+            $progress->setEnrollment($this);
         }
 
         return $this;
@@ -130,10 +103,10 @@ class Enrollments
 
     public function removeProgress(Progress $progress): static
     {
-        if ($this->progress->removeElement($progress)) {
+        if ($this->progresses->removeElement($progress)) {
             // set the owning side to null (unless already changed)
-            if ($progress->getEnrollments() === $this) {
-                $progress->setEnrollments(null);
+            if ($progress->getEnrollment() === $this) {
+                $progress->setEnrollment(null);
             }
         }
 

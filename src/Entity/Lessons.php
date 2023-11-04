@@ -3,11 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\LessonsRepository;
-use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DateTimeImmutable;
 
 #[ORM\Entity(repositoryClass: LessonsRepository::class)]
 class Lessons
@@ -16,9 +16,6 @@ class Lessons
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
-
-    #[ORM\Column(name: "course_id")]
-    private ?int $courseId = null;
 
     #[ORM\Column(length: 255)]
     private ?string $title = null;
@@ -32,8 +29,9 @@ class Lessons
     #[ORM\Column(name: "updated_at", nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'lessons')]
-    private ?Courses $courses = null;
+    #[ORM\ManyToOne(targetEntity: Courses::class, inversedBy: 'lessons')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Courses $course = null;
 
     #[ORM\OneToMany(mappedBy: 'lessons', targetEntity: Progress::class)]
     private Collection $progresses;
@@ -41,10 +39,9 @@ class Lessons
     public function __construct()
     {
         $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
         $this->progresses = new ArrayCollection();
     }
-
-
     public function getId(): ?int
     {
         return $this->id;
@@ -53,18 +50,6 @@ class Lessons
     public function setId(int $id): static
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-    public function getCourseId(): ?int
-    {
-        return $this->course_id;
-    }
-
-    public function setCourseId(int $course_id): static
-    {
-        $this->course_id = $course_id;
 
         return $this;
     }
@@ -95,36 +80,36 @@ class Lessons
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
-        return $this->created_at;
+        return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): static
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
     {
-        $this->created_at = $created_at;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
 
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
-        return $this->updated_at;
+        return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeImmutable $updated_at): static
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
     {
-        $this->updated_at = $updated_at;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    public function getCourses(): ?Courses
+    public function getCourse(): ?Courses
     {
-        return $this->courses;
+        return $this->course;
     }
 
-    public function setCourses(?Courses $courses): static
+    public function setCourse(?Courses $course): static
     {
-        $this->courses = $courses;
+        $this->course = $course;
 
         return $this;
     }
