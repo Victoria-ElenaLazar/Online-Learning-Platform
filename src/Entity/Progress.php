@@ -15,7 +15,8 @@ class Progress
 
     #[ORM\Column]
     private ?int $status = null;
-
+    #[ORM\Column(name: 'course_status', length: 255)]
+    private ?string $courseStatus = "incomplete";
     #[ORM\Column]
     private ?\DateTimeImmutable $lastAccessed = null;
 
@@ -26,6 +27,9 @@ class Progress
     #[ORM\ManyToOne(targetEntity: Lessons::class, inversedBy: 'progresses')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Lessons $lessons = null;
+    #[ORM\ManyToOne(targetEntity: Courses::class, inversedBy: 'progresses')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Courses $courses = null;
 
     public function getId(): ?int
     {
@@ -47,6 +51,17 @@ class Progress
     public function setStatus(int $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+    public function getCourseStatus(): ?string
+    {
+        return $this->courseStatus;
+    }
+
+    public function setCourseStatus(string $courseStatus): static
+    {
+        $this->courseStatus = $courseStatus;
 
         return $this;
     }
@@ -85,5 +100,15 @@ class Progress
         $this->lessons = $lessons;
 
         return $this;
+    }
+
+    public function getCourses(): ?Courses
+    {
+        return $this->courses;
+    }
+
+    public function setCourses(?Courses $courses): void
+    {
+        $this->courses = $courses;
     }
 }

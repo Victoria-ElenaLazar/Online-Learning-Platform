@@ -100,6 +100,7 @@ class LessonsController extends AbstractController
         $progress = new Progress();
         $progress->setLessons($lesson);
         $progress->setStatus(1);
+        $progress->setCourses($lesson->getCourse());
         $progress->setLastAccessed(new \DateTimeImmutable());
         $progress->setEnrollment($enrollment);
 

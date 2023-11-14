@@ -12,7 +12,9 @@
                         <div class="col">
                             <div class="top_bar_content d-flex flex-row align-items-center justify-content-start">
                                 <ul class="top_bar_contact_list">
-                                    <li><div class="question">Have any questions?</div></li>
+                                    <li>
+                                        <div class="question">Have any questions?</div>
+                                    </li>
                                     <li>
                                         <div>(009) 35475 6688933 32</div>
                                     </li>
@@ -23,20 +25,15 @@
                                 <div class="top_bar_login ml-auto">
                                     <ul>
                                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                            <li>
-                                                <a href="{{ path('app_profile') }}" class="nav-item nav-link"><i class="fa fa-user-tie me-2"></i>{{ app.user.username }}</a>
-                                            </li>
-                                            <li>
-                                                <a class="nav-link" href={{ path('app_logout') }}>Logout</a>
-                                            </li>
+                                           <li> <a href="{{ path('app_profile') }}"><i
+                                                        class="fa fa-user"></i> {{ app.user.username }}</a></li>
+                                           <li> <a href="{{ path('app_logout') }}">Logout</a></li>
                                         {% else %}
-                                            <li>
-                                            <a class="nav-link" href={{ path('app_login') }}>Login</a>
-                                            <a class="nav-link" href={{ path('app_register') }}>Register</a>
-                                            </li>
+                                            <li><a href="{{ path('app_login') }}">Login</a></li>
+                                            <li><a href="{{ path('app_register') }}">Register</a></li>
                                         {% endif %}
                                         {% if is_granted("ROLE_ADMIN") %}
-                                            <a href="{{ path('admin') }}" class="nav-item nav-link">Admin panel</a>
+                                           <li> <a href="{{ path('admin') }}">Admin panel</a></li>
                                         {% endif %}
                                     </ul>
                                 </div>
@@ -54,20 +51,21 @@
                     <div class="col">
                         <div class="header_content d-flex flex-row align-items-center justify-content-start">
                             <div class="logo_container">
-                                <a href="/">
+                                <a href="{{ path('app_homepage') }}">
                                     <div class="logo_content d-flex flex-row align-items-end justify-content-start">
-                                        <div class="logo_img"><img src="images/logo.png" alt=""></div>
+                                        <div class="logo_img"><img src="{{ asset('images/logo.png') }}" alt="">
+                                        </div>
                                         <div class="logo_text">learn</div>
                                     </div>
                                 </a>
                             </div>
                             <nav class="main_nav_contaner ml-auto">
                                 <ul class="main_nav">
-                                    <li class="active"><a href="{{ path('app_homepage') }}">home</a></li>
-                                    <li><a href="about.html">about us</a></li>
-                                    <li><a href={{ path('app_courses_index') }}>courses</a></li>
-                                    <li><a href="news.html">news</a></li>
-                                    <li><a href="contact.html">contact</a></li>
+                                    <li><a href="{{ path('app_homepage') }}">home</a></li>
+                                    <li><a href="{{ path('app_about') }}">about us</a></li>
+                                    <li><a href="{{ path('app_courses_index') }}">courses</a></li>
+                                    <li><a href="{{ path('app_news') }}">news</a></li>
+                                    <li><a href="{{ path('app_contact') }}">contact</a></li>
                                 </ul>
                                 <div class="search_button"><i class="fa fa-search" aria-hidden="true"></i></div>
 
@@ -83,22 +81,15 @@
                 </div>
             </div>
         </div>
-
-        <!-- Header Search Panel -->
-        <div class="header_search_container">
-            <div class="container">
-                <div class="row">
-                    <div class="col">
-                        <div class="header_search_content d-flex flex-row align-items-center justify-content-end">
-                            <form action="#" class="header_search_form">
-                                <input type="search" class="search_input" placeholder="Search" required="required">
-                                <button class="header_search_button d-flex flex-column align-items-center justify-content-center">
-                                    <i class="fa fa-search" aria-hidden="true"></i>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
     </header>
+    <script>
+        // Get the current URL path
+        var path = window.location.pathname;
+
+        // Find the corresponding link and add the 'active' class
+        document.querySelectorAll('.main_nav a').forEach(function (link) {
+            if (link.getAttribute('href') === path) {
+                link.parentNode.classList.add('active');
+            }
+        });
+    </script>

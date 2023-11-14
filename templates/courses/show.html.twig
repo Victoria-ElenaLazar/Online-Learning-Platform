@@ -1,11 +1,38 @@
-{% extends 'base.html.twig' %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block title %}Courses{% endblock %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="E-Learning Platform">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Courses index{% endblock %}</title>
 
-{% block body %}
+    {% block stylesheets %}
+        <link rel="stylesheet" type="text/css" href="{{ asset('styles/bootstrap4/bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('plugins/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+        <link rel="stylesheet" href="{{ asset('plugins/video-js/video-js.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('styles/courses.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('styles/courses_responsive.css') }}">
+    {% endblock %}
+</head>
+
+<body>
+<div class="super_container">
+
+    <!-- Header -->
+    {{ include('shared/_header.html.twig') }}
+
+    <!-- Header Search Panel -->
+    {{ include('shared/_headerSearch.html.twig') }}
+
+    <!-- Menu -->
+    {{ include('shared/_menu.html.twig') }}
+
+    <!-- Home -->
     <div class="home">
-        <!-- Background image artist https://unsplash.com/@thepootphotographer -->
-        <div class="home_background parallax_background parallax-window" data-parallax="scroll" data-image-src="{{ asset('images/courses.jpg') }}" data-speed="0.8"></div>
+        <div class="home_background parallax_background parallax-window" data-parallax="scroll"
+             data-image-src="{{ asset('images/course_6.jpg') }}" data-speed="0.8"></div>
         <div class="home_container">
             <div class="container">
                 <div class="row">
@@ -24,57 +51,155 @@
             </div>
         </div>
     </div>
-    <div class="container" style="margin: 150px;">
-    <div class="row g-4 justify-content-center mt-5">
-        {{ lesson.title }} ({{ lesson.course.title }})
-        <div>
-            <i class="fa fa-user"></i>{{ lesson.updatedAt ? lesson.updatedAt|date('d.m.Y') : '' }} (created: {{ lesson.createdAt ? lesson.createdAt|date('d.m.Y') : '' }})
-        </div>
-    </div>
-        <div class="row g-4 justify-content-center mt-5">
-        {{ course.description }}
-        </div>
-        <div class="course_author d-flex align-items-center">
-            <div class="course_author_image">
-                <img src="{{ asset('images/teacher_3.jpg') }}" alt="Author Image" class="rounded-circle" style="width: 40px; height: 40px;">
+
+    <!-- Courses -->
+    <div class="courses">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 offset-lg-1"></div>
             </div>
-            <div class="course_author_name ml-2">{{ course.instructor.username }}</div>
-        </div>
-        <div class="course_details">
-            <div class="fa fa-clock-o mr-2">{{ course.hours }}:{{ course.minutes }} Hrs</div>
-            <div class="fa fa-user">{{ course.createdAt ? course.createdAt|date('d.m.Y') : '' }}</div>
-        </div>
-        <div class="row g-4 justify-content-center mt-5">
-            {% for lesson in course.lessons %}
-                {{ include('shared/_lesson_snippet.html.twig', {lesson: lesson, label: "Start"}) }}
-            {% else %}
-                <div class="col-12"><h5>No lessons found</h5></div>
-            {% endfor %}
-        </div>
-        <div class="row mt-5">
-            {% if is_granted('ROLE_INSTRUCTOR') %}
-                <div class="col text-end">
-                    <a class="btn btn-primary" href="{{ path('app_lessons_new') }}">Add lesson</a>
+            <div class="container" style="margin-top: 20px;">
+                <div class="row g-4 justify-content m-3">
+                    {{ course.description }}
                 </div>
-            {% endif %}
-            <div class="col-auto">
-                <a class="btn btn-primary" href="{{ path('app_courses_index') }}">Back to list</a>
-            </div>
-            {% for enrollemnt in course.enrollments %}
-                {% if app.user.id == enrollemnt.user.id %}
-                    <div class="col-auto">
-                        <a class="btn btn-warning" href="{{ path('app_courses_unenroll', {id: course.id}) }}">Unenroll</a>
+                <div class="course_author d-flex align-items-center">
+                    <div class="course_author_image">
+                        <img src="{{ asset('images/teacher_3.jpg') }}" alt="Author Image" class="rounded-circle"
+                             style="width: 40px; height: 40px;">
                     </div>
-                {% endif %}
-            {% endfor %}
-            {% if is_granted('ROLE_INSTRUCTOR') %}
-                <div class="col-auto">
-                    <a class="btn btn-primary" href="{{ path('app_courses_edit', {'id': course.id}) }}">Edit</a>
+                    <div class="course_author_name ml-2">{{ course.instructor.username }}</div>
                 </div>
-                <div class="col-auto mt-n3">
-                    {{ include('courses/_delete_form.html.twig') }}
+                <div class="course_details">
+                    <div class="fa fa-clock-o mr-2">{{ course.hours }}:{{ course.minutes }} Hrs</div>
+                    <div class="fa fa-user">{{ course.createdAt ? course.createdAt|date('d.m.Y') : '' }}</div>
                 </div>
-            {% endif %}
+
+
+
+                <div class="row mt-5">
+                    {% set userEnrolled = false %}
+                    {% for enrollment in course.enrollments %}
+                        {% if app.user.id == enrollment.user.id %}
+                            {% set userEnrolled = true %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if not userEnrolled and not is_granted('ROLE_INSTRUCTOR') and not is_granted('ROLE_ADMIN') %}
+                        <div class="col-12">
+                            <div class="alert alert-warning" role="alert">
+                                I like your curiosity, but you have to join the course in order to see the lessons.
+                                <a href="{{ path('app_courses_index') }}" class="alert-link">Join the course</a>
+                            </div>
+                        </div>
+                    {% else %}
+                        {% for lesson in course.lessons %}
+                            <div class="col-lg-6 mb-4">
+                                <div class="lesson card p-4">
+                                    <div class="lesson_image mb-3">
+                                        <img src="{{ asset('images/course_3.jpg') }}" alt="" class="card-img-top w-100 h-auto border-radius-5">
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="lesson_header d-flex flex-column align-items-center justify-content-between">
+                                            <div class="lesson_title mb-3">
+                                                {% if is_granted('ROLE_INSTRUCTOR') or is_granted('ROLE_ADMIN') %}
+                                                    <h3><a href="{{ path('app_lessons_show', {'id': lesson.id}) }}">{{ lesson.title }}</a></h3>
+                                                    <h4><a href="{{ path('app_lessons_show', {'id': lesson.id}) }}">Show Content</a></h4>
+                                                {% else %}
+                                                    <h3><a href="{{ path('app_lessons_show', {'id': lesson.id}) }}">{{ lesson.title }}</a></h3>
+                                                {% endif %}
+                                            </div>
+                                            <div class="lesson_subtitle mb-3">
+                                                {% if is_granted('ROLE_INSTRUCTOR') %}
+                                                    <h3><a href="{{ path('app_lessons_edit', {'id': lesson.id}) }}" class="btn btn-warning">Update</a></h3>
+                                                {% else %}
+                                                    <h3><a href="{{ path('app_lessons_show', {'id': lesson.id}) }}" class="btn btn-primary">{{ lesson.title }}</a></h3>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <h5 class="mb-4">{{ lesson.title }}</h5>
+                                            {% for enrollment in app.user.enrollments %}
+                                                {% for progress in enrollment.progresses %}
+                                                    {% if progress.status == 1 and lesson.id == progress.lessons.id %}
+                                                        <h6 class="text-success mt-n3">COMPLETED</h6>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            {% endfor %}
+                                            {% if not is_granted('ROLE_INSTRUCTOR') and not is_granted('ROLE_ADMIN') %}
+                                                <a href="{{ path('app_lessons_show', {'id': lesson.id}) }}" class="btn btn-primary mt-2">Start</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% else %}
+                            <div class="col-12"><h5>No lessons found</h5></div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+
+
+
+            </div>
+
+                <div class="row mt-5">
+                    {% if is_granted('ROLE_INSTRUCTOR') %}
+                        <div class="col text-end" style="margin-bottom: 30px;">
+                            <a class="btn btn-primary" href="{{ path('app_lessons_new') }}">Add lesson</a>
+                        </div>
+                    {% endif %}
+                    <div class="col-auto" style="margin-bottom: 30px;">
+                        <a class="btn btn-primary" href="{{ path('app_courses_index') }}">Back to list</a>
+                    </div>
+
+                    {% if not is_granted('ROLE_INSTRUCTOR') %}
+                        {% for enrollement in course.enrollments %}
+                            {% if app.user.id == enrollement.user.id %}
+                                <div class="col-auto" style="margin-bottom: 30px;">
+                                    <a class="btn btn-success" href="{{ path('app_course_complete', {id: course.id}) }}">Complete course</a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-auto">
+                            <a class="btn btn-primary" href="{{ path('app_courses_edit', {'id': course.id}) }}">Edit</a>
+                        </div>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_STUDENT') %}
+                        {% for enrollement in course.enrollments %}
+                            {% if app.user.id == enrollement.user.id %}
+                                <div class="col-auto" style="margin-bottom: 30px;">
+                                    <a class="btn btn-warning" href="{{ path('app_courses_unenroll', {id: course.id}) }}">Exit
+                                        course</a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-auto mt-n3">
+                            {{ include('courses/_delete_form.html.twig') }}
+                        </div>
+                    {% endif %}
+
+                    {% if is_granted('ROLE_INSTRUCTOR') %}
+                        <div class="col-auto mt-n3">
+                            {{ include('courses/_delete_form.html.twig') }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
-{% endblock %}
+    {{ include('shared/_footer.html.twig') }}
+</div>
+
+<!-- Scripts -->
+<script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+<script src="{{ asset('styles/bootstrap4/popper.js') }}"></script>
+<script src="{{ asset('styles/bootstrap4/bootstrap.min.js') }}"></script>
+<script src="{{ asset('plugins/easing/easing.js') }}"></script>
+<script src="{{ asset('plugins/parallax-js-master/parallax.min.js') }}"></script>
+<script src="{{ asset("js/courses.js") }}"></script>
+</body>
+
+</html>

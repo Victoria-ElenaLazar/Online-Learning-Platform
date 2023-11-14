@@ -1,74 +1,145 @@
-{% extends 'base.html.twig' %}
-
 {% block title %}Courses index{% endblock %}
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="E-Learning Platform">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {% block stylesheets %}
 
+        <link rel="stylesheet" type="text/css" href="{{ asset('styles/bootstrap4/bootstrap.min.css') }}">
+        <link href="{{ asset('plugins/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet"
+              type="text/css">
+        <link href="{{ asset('plugins/video-js/video-js.css') }}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" type="text/css" href="{{ asset('styles/courses.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ asset('styles/courses_responsive.css') }}">
+    {% endblock %}
+
+</head>
 {% block body %}
-    <div class="container" style="margin-top: 200px;">
-        <div class="row">
-            {% for course in courses %}
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="course card">
-                        <div class="course_image">
-                            <img src="{{ asset('images/course_4.jpg') }}" alt="" class="card-img-top">
-                        </div>
-                        <div class="card-body">
-                            <div class="course_header d-flex flex-row align-items-center justify-content-between">
-                                <div class="course_tag">
-                                    <a href="#">Featured</a>
-                                </div>
-                                <div class="course_price">
-                                    Price: <span>$135</span>
-                                </div>
-                            </div>
-                            <div class="course_title">
-                                <h3><a href="{{ path('app_courses_show', {'id': course.id}) }}">{{ course.title }}</a></h3>
-                            </div>
-                            <div class="course_subtitle">
-                                <h3><a href="{{ path('app_courses_show', {'id': course.id}) }}">Read More</a></h3>
-                            </div>
+    <div class="super_container">
+        {{ include('shared/_header.html.twig') }}
+        {{ include('shared/_headerSearch.html.twig') }}
+        {{ include('shared/_menu.html.twig') }}
 
-                            {% if not is_granted('ROLE_INSTRUCTOR') %}
-                                {% set found = false %}
-                                {% for enrollment in course.enrollments %}
-                                    {% if user.id == enrollment.user.id %}
-                                        {% set found = true %}
-                                        <div class="course_subtitle">
-                                            <h3><a href="{{ path('app_courses_show', {'id': course.id}) }}">Resume</a></h3>
-                                        </div>
-                                    {% endif %}
-                                {% endfor %}
-                                {% if not found %}
-                                    <a href="{{ path('app_courses_enroll', {'id': course.id}) }}"
-                                       class="btn btn-primary btn-sm mt-2">Join Now</a>
-                                {% endif %}
-                            {% else %}
-                                <a href="{{ path('app_courses_edit', {'id': course.id}) }}"
-                                   class="btn btn-primary btn-sm mt-2">Edit</a>
-                            {% endif %}
+        <!-- Home -->
 
-                            <div class="course_text mt-3">{{ course.description }}</div>
-                        </div>
-                        <div class="card-footer d-flex align-items-center justify-content-between">
-                            <div class="course_author d-flex align-items-center">
-                                <div class="course_author_image">
-                                    <img src="{{ asset('images/teacher_3.jpg') }}" alt="Author Image" class="rounded-circle" style="width: 40px; height: 40px;">
+        <div class="home">
+            <!-- Background image artist https://unsplash.com/@thepootphotographer -->
+            <div class="home_background parallax_background parallax-window" data-parallax="scroll"
+                 data-image-src="{{ asset('images/course_4.jpg') }}" data-speed="0.8"></div>
+            <div class="home_container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="home_content text-center">
+                                <div class="home_title">About us</div>
+                                <div class="breadcrumbs">
+                                    <ul>
+                                        <li><a href="{{ path('app_homepage') }}">Home</a></li>
+                                        <li>About us</li>
+                                    </ul>
                                 </div>
-                                <div class="course_author_name ml-2">{{ course.instructor.username }}</div>
-                            </div>
-                            <div class="course_details">
-                                <div class="fa fa-clock-o mr-2">{{ course.hours }}:{{ course.minutes }} Hrs</div>
-                                <div class="fa fa-user">{{ course.createdAt ? course.createdAt|date('d.m.Y') : '' }}</div>
                             </div>
                         </div>
                     </div>
                 </div>
-            {% else %}
-                <div class="col-12"><h5>No records found</h5></div>
-            {% endfor %}
+            </div>
         </div>
+        {{ include('shared/_choose.html.twig') }}
 
-        {% if is_granted('ROLE_INSTRUCTOR') %}
-            <a class="mt-3 btn btn-primary" href="{{ path('app_courses_new') }}">Create new</a>
-        {% endif %}
+        {{ include('shared/_courseSearch.html.twig') }}
+
+        <div class="container" style="margin-top: 200px;">
+            <div class="row">
+                {% for course in courses %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="course card">
+                            <div class="course_image">
+                                <img src="{{ asset('images/course_4.jpg') }}" alt="" class="card-img-top">
+                            </div>
+                            <div class="card-body">
+                                <div class="course_header d-flex flex-row align-items-center justify-content-between">
+                                    <div class="course_tag">
+                                        <a href="#">Featured</a>
+                                    </div>
+                                    <div class="course_price">
+                                        Price: <span>$135</span>
+                                    </div>
+                                </div>
+                                <div class="course_title">
+                                    <h3>
+                                        <a href="{{ path('app_courses_show', {'id': course.id}) }}">{{ course.title }}</a>
+                                    </h3>
+                                </div>
+                                <div class="course_subtitle">
+                                    <h3><a href="{{ path('app_courses_show', {'id': course.id}) }}">Read
+                                            More</a></h3>
+                                </div>
+
+                                {% if not is_granted('ROLE_INSTRUCTOR') %}
+                                    {% set found = false %}
+                                    {% set label = 'Resume' %}
+
+                                    {% for enrollment in course.enrollments %}
+                                        {% if user.id == enrollment.user.id %}
+                                            {% set found = true %}
+                                            {% if progress is defined and progress.courseStatus == 'completed' %}
+                                                {% set label = 'Completed' %}
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endfor %}
+
+                                    <div class="course_subtitle">
+                                        {% if found %}
+                                            <h3>
+                                                <a href="{{ path('app_courses_show', {'id': course.id}) }}">{{ label }}</a>
+                                            </h3>
+                                        {% else %}
+                                            <a href="{{ path('app_courses_enroll', {'id': course.id}) }}"
+                                               class="btn btn-primary btn-sm mt-2">Join Now</a>
+                                        {% endif %}
+                                    </div>
+                                {% else %}
+                                    <a href="{{ path('app_courses_edit', {'id': course.id}) }}"
+                                       class="btn btn-primary btn-sm mt-2">Edit</a>
+                                {% endif %}
+
+                                <div class="course_text mt-3">{{ course.description }}</div>
+                            </div>
+                            <div class="card-footer d-flex align-items-center justify-content-between">
+                                <div class="course_author d-flex align-items-center">
+                                    <div class="course_author_image">
+                                        <img src="{{ asset('images/teacher_3.jpg') }}" alt="Author Image"
+                                             class="rounded-circle" style="width: 40px; height: 40px;">
+                                    </div>
+                                    <div class="course_author_name ml-2">{{ course.instructor.username }}</div>
+                                </div>
+                                <div class="course_details">
+                                    <div class="fa fa-clock-o mr-2">{{ course.hours }}:{{ course.minutes }}
+                                        Hrs
+                                    </div>
+                                    <div class="fa fa-user">{{ course.createdAt ? course.createdAt|date('d.m.Y') : '' }}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="col-12"><h5>No records found</h5></div>
+                {% endfor %}
+            </div>
+            {% if is_granted('ROLE_INSTRUCTOR') %}
+                <a class="mt-3 btn btn-primary" id="create_new" style="margin-bottom: 20px" href="{{ path('app_courses_new') }}">Create new</a>
+            {% endif %}
+        </div>
     </div>
+    {{ include('shared/_footer.html.twig') }}
 {% endblock %}
+
+
+<script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+<script src="{{ asset('styles/bootstrap4/popper.js') }}"></script>
+<script src="{{ asset('styles/bootstrap4/bootstrap.min.js') }}"></script>
+<script src="{{ asset('plugins/easing/easing.js') }}"></script>
+<script src="{{ asset('plugins/parallax-js-master/parallax.min.js') }}"></script>
+<script src="{{ asset("js/courses.js") }}"></script>
+

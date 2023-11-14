@@ -17,19 +17,15 @@
             </div>
         </div>
 
+
+
         <div class="row mt-5">
             <div class="col text-end">
-                <a class="btn btn-primary" href="{{ path('app_lessons_index') }}">Back to list</a>
+                {% if is_granted('ROLE_INSTRUCTOR') %}
+                    <a class="btn btn-primary" href="{{ path('app_lessons_index') }}">See all lessons</a>
+                {% endif %}
             </div>
-            {% set found = false %}
-            {% for enrollement in app.user.enrollments %}
-                {% for progress in enrollement.progresses %}
-                    {% if progress.status == 1 and lesson.id == progress.lessons.id %}
-                        {% set found = true %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-            {% if not found %}
+            {% if not is_granted('ROLE_INSTRUCTOR') %}
                 <div class="col-auto">
                     <a class="btn btn-success" href="{{ path('app_lessons_complete', {id: lesson.id}) }}">Complete</a>
                 </div>
@@ -43,5 +39,9 @@
                 </div>
             {% endif %}
         </div>
+
+
+
+
     </div>
 {% endblock %}

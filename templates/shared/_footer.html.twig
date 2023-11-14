@@ -10,7 +10,7 @@
                     <div class="logo_container">
                         <a href="#">
                             <div class="logo_content d-flex flex-row align-items-end justify-content-start">
-                                <div class="logo_img"><img src="images/logo.png" alt=""></div>
+                                <div class="logo_img"><img src="{{ asset('images/logo.png') }}" alt=""></div>
                                 <div class="logo_text">learn</div>
                             </div>
                         </a>
@@ -36,12 +36,10 @@
                 <div class="footer_links">
                     <div class="footer_title">Quick menu</div>
                     <ul class="footer_list">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="about.html">About us</a></li>
-                        <li><a href="#">Testimonials</a></li>
-                        <li><a href="#">Services</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="#">Facts</a></li>
+                        <li><a href="{{ path('app_homepage') }}">Home</a></li>
+                        <li><a href="{{ path('app_about') }}">About us</a></li>
+                        <li><a href="{{ path('app_contact') }}">Contact</a></li>
+                        <li><a href="{{ path('app_news') }}">Facts</a></li>
                     </ul>
                 </div>
             </div>
@@ -50,10 +48,10 @@
                 <div class="footer_links">
                     <div class="footer_title">Useful Links</div>
                     <ul class="footer_list">
-                        <li><a href={{ path('app_courses_index') }}>Courses</a></li>
-                        <li><a href="#">Events</a></li>
-                        <li><a href="news.html">News</a></li>
-                        <li><a href="#">Teachers</a></li>
+                        <li><a href="{{ path('app_courses_index') }}">Courses</a></li>
+                        <li><a href="{{ path('app_news') }}">Events</a></li>
+                        <li><a href="{{ path('app_news') }}">News</a></li>
+                        <li><a href="{{ path('app_about') }}">Teachers</a></li>
                         <li><a href="#">Links</a></li>
                         <li><a href="#">FAQ</a></li>
                     </ul>
@@ -82,11 +80,3 @@
         </div>
     </div>
 </footer>
-</div>
-
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="styles/bootstrap4/popper.js"></script>
-<script src="styles/bootstrap4/bootstrap.min.js"></script>
-<script src="plugins/easing/easing.js"></script>
-<script src="plugins/parallax-js-master/parallax.min.js"></script>
-<script src="js/courses.js"></script>

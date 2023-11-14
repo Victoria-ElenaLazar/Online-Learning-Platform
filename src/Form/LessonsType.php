@@ -21,7 +21,7 @@ class LessonsType extends AbstractType
                 'choice_label' => 'title'
             ])
             ->add('title')
-            ->add('content', TextareaType::class)
+            ->add('content', CKEditorType::class)
         ;
     }
 

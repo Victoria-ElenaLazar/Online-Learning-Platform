@@ -48,8 +48,8 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Enrollments::class)]
     private Collection $enrollments;
 
-//    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
-//    private ?Profile $profile = null;
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Profile $profile = null;
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
@@ -233,20 +233,20 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-//    public function getProfile(): ?Profile
-//    {
-//        return $this->profile;
-//    }
-//
-//    public function setProfile(Profile $profile): static
-//    {
-//        // set the owning side of the relation if necessary
-//        if ($profile->getUser() !== $this) {
-//            $profile->setUser($this);
-//        }
-//
-//        $this->profile = $profile;
-//
-//        return $this;
-//    }
+    public function getProfile(): ?Profile
+    {
+        return $this->profile;
+    }
+
+    public function setProfile(Profile $profile): static
+    {
+        // set the owning side of the relation if necessary
+        if ($profile->getUsers() !== $this) {
+            $profile->setUsers($this);
+        }
+
+        $this->profile = $profile;
+
+        return $this;
+    }
 }

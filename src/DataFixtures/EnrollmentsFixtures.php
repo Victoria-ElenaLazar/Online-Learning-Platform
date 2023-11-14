@@ -2,17 +2,23 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\Enrollments;
 use Doctrine\Persistence\ObjectManager;
-;
+use Doctrine\Bundle\FixturesBundle\Fixture;
+
 
 class EnrollmentsFixtures extends Fixture
 {
+
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
+        global $courses;
+        global $user;
 
+        $enrollment = new Enrollments();
+        $enrollment->setCourse($courses);
+        $enrollment->setUser($user);
+        $manager->persist($enrollment);
         $manager->flush();
-    }
+        }
 }

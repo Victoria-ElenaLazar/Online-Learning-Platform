@@ -4,12 +4,17 @@ namespace App\Controller;
 
 use App\Entity\Courses;
 use App\Entity\Enrollments;
+use App\Entity\Lessons;
+use App\Entity\Progress;
 use App\Entity\Users;
 use App\Form\CoursesType;
 use App\Repository\CoursesRepository;
 use App\Repository\EnrollmentsRepository;
+use App\Repository\LessonsRepository;
+use App\Repository\ProgressRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\MakerBundle\Tests\tmp\current_project_xml\src\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -83,13 +88,14 @@ class CoursesController extends AbstractController
     #[Route('/{id}', name: 'app_courses_delete', methods: ['POST'])]
     public function delete(Request $request, Courses $course, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$course->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $course->getId(), $request->request->get('_token'))) {
             $entityManager->remove($course);
             $entityManager->flush();
         }
 
         return $this->redirectToRoute('app_courses_index', [], Response::HTTP_SEE_OTHER);
     }
+
     #[Route('/{id}/enroll', name: 'app_courses_enroll', methods: ['GET'])]
     public function enroll(Request $request, Courses $course, EntityManagerInterface $entityManager): Response
     {
@@ -102,12 +108,47 @@ class CoursesController extends AbstractController
     }
 
     #[Route('/{id}/unenroll', name: 'app_courses_unenroll', methods: ['GET'])]
-    public function unenroll(Courses $course, EntityManagerInterface $entityManager,
-                             EnrollmentsRepository $enrollmentsRepository): Response
+    public function unenroll(Courses $course, EntityManagerInterface $entityManager, EnrollmentsRepository $enrollmentsRepository): Response
     {
-        $enrollment = $enrollmentsRepository->findOneBy(['course' => $course, 'user' => $this->getUser()]);
-        $entityManager->remove($enrollment);
-        $entityManager->flush();
+        $user = $this->getUser();
+        $enrollment = $enrollmentsRepository->findOneBy(['course' => $course, 'user' => $user]);
+
+        if ($enrollment) {
+            $progressRecords = $enrollment->getProgresses();
+            foreach ($progressRecords as $progress) {
+                $entityManager->remove($progress);
+            }
+
+            $entityManager->remove($enrollment);
+            $entityManager->flush();
+        }
         return $this->redirectToRoute('app_courses_index');
+    }
+
+    #[Route('/{id}/complete', name: 'app_course_complete', methods: ['GET'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function complete(Courses $course, Lessons $lessons, ProgressRepository $progressRepository, EnrollmentsRepository $enrollmentsRepository,
+                             EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $enrollment = $enrollmentsRepository->findOneBy(['course' => $course, 'user' => $user]);
+        $enrollments = $enrollmentsRepository->findOneBy(['course' => $lessons->getCourse(), 'user' => $user]);
+
+        $progress = $progressRepository->findOneBy(['lessons' => $lessons]);
+
+        if ($progress && $progress->getStatus() == 1) {
+            $progress->setCourses($course);
+            $progress->setCourseStatus('completed');
+            $progress->setLastAccessed(new \DateTimeImmutable());
+            $progress->setEnrollment($enrollments);
+        }
+
+        $enrollment->setUser($user);
+
+        $entityManager->persist($progress);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_courses_index', ['id' => $enrollment->getCourse()->getId()]);
+
     }
 }

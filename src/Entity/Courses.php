@@ -37,6 +37,8 @@ class Courses
 
     #[ORM\OneToMany(mappedBy: 'course', targetEntity: Enrollments::class)]
     private Collection $enrollments;
+    #[ORM\OneToMany(mappedBy: 'course', targetEntity: Progress::class)]
+    private Collection $progresses;
 
     #[ORM\Column]
     private ?int $hours = null;
@@ -49,6 +51,7 @@ class Courses
         $this->createdAt = new DateTimeImmutable();
         $this->lessons = new ArrayCollection();
         $this->enrollments = new ArrayCollection();
+        $this->progresses = new ArrayCollection();
     }
     public function getId(): ?int
     {
@@ -205,4 +208,26 @@ class Courses
 
         return $this;
     }
+//
+//    public function getUser(): ?Users
+//    {
+//        return $this->user;
+//    }
+//
+//    public function setUser(?Users $user): void
+//    {
+//        $this->user = $user;
+//    }
+
+    public function getProgresses(): Collection
+    {
+        return $this->progresses;
+    }
+
+    public function setProgresses(Collection $progresses): void
+    {
+        $this->progresses = $progresses;
+    }
+
+
 }
