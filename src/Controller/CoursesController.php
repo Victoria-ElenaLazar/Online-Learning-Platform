@@ -143,12 +143,13 @@ class CoursesController extends AbstractController
             $progress->setEnrollment($enrollments);
         }
 
+
         $enrollment->setUser($user);
 
         $entityManager->persist($progress);
         $entityManager->flush();
 
-        return $this->redirectToRoute('app_courses_index', ['id' => $enrollment->getCourse()->getId()]);
+        return $this->redirectToRoute('app_courses_index', ['id' => $enrollment->getCourse()->getId(),]);
 
     }
 }

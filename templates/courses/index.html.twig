@@ -83,16 +83,20 @@
                                     {% for enrollment in course.enrollments %}
                                         {% if user.id == enrollment.user.id %}
                                             {% set found = true %}
-                                            {% if progress is defined and progress.courseStatus == 'completed' %}
-                                                {% set label = 'Completed' %}
-                                            {% endif %}
+                                            {% for progress in enrollment.progresses %}
+                                                {% if progress is defined and progress.courseStatus == 'completed' %}
+                                                    {% set label = 'Completed' %}
+                                                {% endif %}
+                                            {% endfor %}
                                         {% endif %}
                                     {% endfor %}
+
+
 
                                     <div class="course_subtitle">
                                         {% if found %}
                                             <h3>
-                                                <a href="{{ path('app_courses_show', {'id': course.id}) }}">{{ label }}</a>
+                                                <a class="btn btn-warning btn-sm mt-2" href="{{ path('app_courses_show', {'id': course.id}) }}">{{ label }}</a>
                                             </h3>
                                         {% else %}
                                             <a href="{{ path('app_courses_enroll', {'id': course.id}) }}"

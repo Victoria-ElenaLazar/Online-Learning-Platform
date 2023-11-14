@@ -152,6 +152,7 @@
                         <a class="btn btn-primary" href="{{ path('app_courses_index') }}">Back to list</a>
                     </div>
 
+
                     {% if not is_granted('ROLE_INSTRUCTOR') %}
                         {% for enrollement in course.enrollments %}
                             {% if app.user.id == enrollement.user.id %}
@@ -165,6 +166,7 @@
                             <a class="btn btn-primary" href="{{ path('app_courses_edit', {'id': course.id}) }}">Edit</a>
                         </div>
                     {% endif %}
+
 
                     {% if is_granted('ROLE_STUDENT') %}
                         {% for enrollement in course.enrollments %}

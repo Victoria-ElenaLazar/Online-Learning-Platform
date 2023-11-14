@@ -6,7 +6,7 @@
 
 ## Overview
 
-Welcome to our Online Learning Platform, where knowledge meets convenience. Online Learning Platform offers a seamless experience for both students and instructors, fostering a dynamic learning environment.
+Welcome to Online Learning Platform Documentation, where knowledge meets convenience. Online Learning Platform offers a seamless experience for both students and instructors, fostering a dynamic learning environment.
 
 
 This project helped me to learn and understand how to create and use Symfony Framework, Bundles and Migrations.
@@ -34,8 +34,8 @@ This project helped me to learn and understand how to create and use Symfony Fra
 
 ## Features
 - **Authentication:** The user have to be fully authenticated in order to have access to all the features presented in this application.
-- **Customizable:** Customize your profile page. Additionally, the users with instructor or admin roles has the accessibility to create, update, delete courses and lessons.
-- **Detailed Documentation:** Easy-to-follow documentation and code examples for quick integration.
+- **Customizable:** Customize your profile page. Additionally, the users with instructor or admin roles has the authority to create, update, delete courses and lessons.
+- **Detailed Documentation:** Easy-to-follow documentation and layouts for quick integration.
 
 
 ## Getting Started
@@ -79,56 +79,69 @@ Now you have the database with specific tables.
 ## Authentication
 
 You will have limited access on the Home Page. In order to have full access you have to register and to log in.
+
 **'Authorization'** Create an account by clicking the 'Register' button, top-right corner:
 
  **Sign-in**: Sign-in with your credentials. You'll be redirected to Home Page.
 
-#[Layout](#layout)
+# Layout
 
-
-### For Students
+## For Students
 
 - **Enroll in Courses:** Browse through a diverse range of courses, enroll with a click, and embark on your learning journey.
-- 
-  ![Join Now](public/uploads/examples/joinnow.PNG=300x200)
+
+
+
+  <img src="public/uploads/examples/joinnow.PNG" alt="Join Now" width="200">
+
 
 - **Start Lessons:** Access engaging lessons, learn at your own pace, and track your progress effortlessly.
-  ![Start lesson](public/uploads/examples/startLessons.PNG=300x200)
+
+
+  <img src="public/uploads/examples/startLessons.PNG" alt="Start Lesson" width="200">
+
 
 - **Create Profile:** Personalize your learning experience by creating a profile that reflects your academic journey.
-  ![Create Profile](public/uploads/examples/createProfile.PNG=300x200)
+
+
+  <img src="public/uploads/examples/createProfile.PNG" alt="Create Profile" width="200">
+
 
 - **Course Management:** Easily exit from courses you've completed or wish to discontinue.
 
 - **Limited Access:** Enrollment is an important step for students in order to see the content of the course.
 
-  ![Limited Access](public/uploads/examples/limitedaccess.PNG=300x200)
+
+  <img src="public/uploads/examples/limitedaccess.PNG" alt="Limited Access" width="200">
 
 
-
-### For Instructors
+## For Instructors
 
 - **Course Creation:** Empower others by creating comprehensive courses tailored to your expertise.
-  ![Create Course](public/uploads/examples/createCourse.PNG=30x20)
+
+
+  <img src="public/uploads/examples/createCourse.PNG" alt="Create Course" width="200">
 
 
 - **Lesson Management:** Add, edit, update, or remove lessons to keep your content current and engaging.
-  ![Add Lesson](public/uploads/examples/addLesson.PNG=30x20)
+
+
+  <img src="public/uploads/examples/addLesson.PNG" alt="Add Lesson" width="200">
+
 
 - **Create Profile:** Personalize your learning experience by creating a profile that reflects your academic journey.
 
-
-### For Admins
+## For Admins
 
 - **Full Control:** Admins have the power to perform all actions available to instructors, ensuring the smooth operation of the platform.
 - **Statistical Insights:** Gain valuable insights into platform usage, course popularity, and student engagement through the admin panel.
 
 
-![Admin](public/uploads/examples/admin.PNG=30x20)
+  <img src="public/uploads/examples/admin.PNG" alt="Admin" width="200">
+
+
 
 - **Create Profile:** Personalize your learning experience by creating a profile that reflects your academic journey.
-
-
 
 
 
