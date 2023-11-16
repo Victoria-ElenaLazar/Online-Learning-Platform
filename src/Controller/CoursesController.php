@@ -127,14 +127,14 @@ class CoursesController extends AbstractController
 
     #[Route('/{id}/complete', name: 'app_course_complete', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function complete(Courses $course, Lessons $lessons, ProgressRepository $progressRepository, EnrollmentsRepository $enrollmentsRepository,
+    public function complete(Courses $course, ProgressRepository $progressRepository, EnrollmentsRepository $enrollmentsRepository,
                              EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
         $enrollment = $enrollmentsRepository->findOneBy(['course' => $course, 'user' => $user]);
-        $enrollments = $enrollmentsRepository->findOneBy(['course' => $lessons->getCourse(), 'user' => $user]);
+        $enrollments = $enrollmentsRepository->findOneBy(['course' => $course, 'user' => $user]);
 
-        $progress = $progressRepository->findOneBy(['lessons' => $lessons]);
+        $progress = $progressRepository->findOneBy(['courses' => $course]);
 
         if ($progress && $progress->getStatus() == 1) {
             $progress->setCourses($course);

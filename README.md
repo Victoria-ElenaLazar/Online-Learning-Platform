@@ -92,13 +92,14 @@ You will have limited access on the Home Page. In order to have full access you 
 
 
 
-  <img src="public/uploads/examples/joinnow.PNG" alt="Join Now" width="200">
+  <img src="public/uploads/examples/joinNow.PNG" alt="Join Now" width="200">
+
 
 
 - **Start Lessons:** Access engaging lessons, learn at your own pace, and track your progress effortlessly.
 
 
-  <img src="public/uploads/examples/startLessons.PNG" alt="Start Lesson" width="200">
+  <img src="public/uploads/examples/startLesson.PNG" alt="Start Lesson" width="200">
 
 
 - **Create Profile:** Personalize your learning experience by creating a profile that reflects your academic journey.
@@ -112,7 +113,7 @@ You will have limited access on the Home Page. In order to have full access you 
 - **Limited Access:** Enrollment is an important step for students in order to see the content of the course.
 
 
-  <img src="public/uploads/examples/limitedaccess.PNG" alt="Limited Access" width="200">
+  <img src="public/uploads/examples/limitedAccess.PNG" alt="Limited Access" width="200">
 
 
 ## For Instructors

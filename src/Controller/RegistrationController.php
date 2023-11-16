@@ -43,15 +43,17 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-                $email = (new TemplatedEmail())
-                    ->from(new Address('info@elaerntemplate.com', 'Registration verification'))
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user, $email);
+            $email = (new TemplatedEmail())
+                ->from(new Address('info@elaerntemplate.com', 'Registration verification'))
+                ->to($user->getEmail())
+                ->subject('Please Confirm your Email')
+                ->htmlTemplate('registration/confirmation_email.html.twig');
+            try {
+                $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user, $email);
+                error_log('email sent');
+            }catch (\Exception $exception){
+                error_log('email failed');
+            }
 
             return $this->redirectToRoute('app_login');
         }
