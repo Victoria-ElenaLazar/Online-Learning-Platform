@@ -1,0 +1,95 @@
+<div class="super_container">
+
+    <!-- Header -->
+
+    <header class="header">
+
+        <!-- Top Bar -->
+        <div class="top_bar">
+            <div class="top_bar_container">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <div class="top_bar_content d-flex flex-row align-items-center justify-content-start">
+                                <ul class="top_bar_contact_list">
+                                    <li>
+                                        <div class="question">Have any questions?</div>
+                                    </li>
+                                    <li>
+                                        <div>(009) 35475 6688933 32</div>
+                                    </li>
+                                    <li>
+                                        <div>info@elaerntemplate.com</div>
+                                    </li>
+                                </ul>
+                                <div class="top_bar_login ml-auto">
+                                    <ul>
+                                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                           <li> <a href="{{ path('app_profile') }}"><i
+                                                        class="fa fa-user"></i> {{ app.user.username }}</a></li>
+                                           <li> <a href="{{ path('app_logout') }}">Logout</a></li>
+                                        {% else %}
+                                            <li><a href="{{ path('app_login') }}">Login</a></li>
+                                            <li><a href="{{ path('app_register') }}">Register</a></li>
+                                        {% endif %}
+                                        {% if is_granted("ROLE_ADMIN") %}
+                                           <li> <a href="{{ path('admin') }}">Admin panel</a></li>
+                                        {% endif %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header Content -->
+        <div class="header_container">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="header_content d-flex flex-row align-items-center justify-content-start">
+                            <div class="logo_container">
+                                <a href="{{ path('app_homepage') }}">
+                                    <div class="logo_content d-flex flex-row align-items-end justify-content-start">
+                                        <div class="logo_img"><img src="{{ asset('images/logo.png') }}" alt="">
+                                        </div>
+                                        <div class="logo_text">learn</div>
+                                    </div>
+                                </a>
+                            </div>
+                            <nav class="main_nav_contaner ml-auto">
+                                <ul class="main_nav">
+                                    <li><a href="{{ path('app_homepage') }}">home</a></li>
+                                    <li><a href="{{ path('app_about') }}">about us</a></li>
+                                    <li><a href="{{ path('app_courses_index') }}">courses</a></li>
+                                    <li><a href="{{ path('app_news') }}">news</a></li>
+                                    <li><a href="{{ path('app_contact') }}">contact</a></li>
+                                </ul>
+                                <div class="search_button"><i class="fa fa-search" aria-hidden="true"></i></div>
+
+                                <!-- Hamburger -->
+
+                                <div class="hamburger menu_mm">
+                                    <i class="fa fa-bars menu_mm" aria-hidden="true"></i>
+                                </div>
+                            </nav>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <script>
+        // Get the current URL path
+        var path = window.location.pathname;
+
+        // Find the corresponding link and add the 'active' class
+        document.querySelectorAll('.main_nav a').forEach(function (link) {
+            if (link.getAttribute('href') === path) {
+                link.parentNode.classList.add('active');
+            }
+        });
+    </script>

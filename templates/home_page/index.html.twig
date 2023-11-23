@@ -1,0 +1,132 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home Page!{% endblock %}
+
+{% block body %}
+    <div class="super_container">
+        <!-- Home -->
+
+        <div class="home">
+            <div class="home_slider_container">
+
+                <!-- Home Slider -->
+                <div class="owl-carousel owl-theme home_slider">
+
+                    <!-- Slider Item -->
+                    {{ include('shared/_slider.html.twig') }}
+                </div>
+            </div>
+        </div>
+        <!-- Featured Course -->
+        <div class="featured" style="margin-top: 150px;">
+            <div class="container">
+                <div class="row">
+                    {% for course in courses %}
+                        {% set randomImage = random(['course_1.jpg', 'course_4.jpg', 'course_7.jpg', 'course_6.jpg']) %}
+                        <div class="col-lg-12 mb-4">
+                            <div class="featured_content d-flex">
+                                <div class="col-lg-6 mb-4">
+                                    <div class="featured_content">
+                                        {% if course.id is not empty %}
+                                            <div class="featured_header d-flex align-items-center justify-content-between mb-3">
+                                                <div class="featured_tag"><a href="{{ path('app_courses_show', {id:course.id}) }}">Featured</a></div>
+                                                <div class="featured_price">Price: <span>$135</span></div>
+                                            </div>
+                                        {% endif %}
+                                        {% if course.id is not empty %}
+                                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                                            <div class="featured_title mb-3">
+                                                <h3><a href="{{ path('app_courses_show', {id:course.id}) }}">{{ course.title }}</a></h3>
+                                            </div>
+                                        {% else %}
+                                            <div class="featured_title mb-3">
+                                                <h3><a href="{{ path('app_login', {id:course.id}) }}">{{ course.title }}</a></h3>
+                                            </div>
+                                            {% endif %}
+                                        {% endif %}
+                                        <div class="featured_text mb-3">{{ course.description }}</div>
+                                        <div class="course_footer d-flex align-items-center justify-content-between">
+                                            <div class="course_author_image"><img src="{{ asset('images/featured_author.jpg') }}" alt="Author"></div>
+                                            <div class="created_at">{{ course.createdAt ? course.createdAt|date('Y-m-d H:i:s') : '' }}</div>
+                                            <div class="course_sales"><span>352</span> Sales</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 mb-4">
+                                    <!-- Background image -->
+                                    <div class="featured_background" style="background-image:url({{ asset('images/' ~ randomImage) }})"></div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Courses -->
+
+            {{ include('shared/_choose.html.twig') }}
+
+            {{ include('shared/_courseSearch.html.twig') }}
+
+            <div class="row">
+                <div class="col">
+                    <!-- Courses Slider -->
+                    <div class="courses_slider_container">
+                        <div class="owl-carousel owl-theme courses_slider">
+
+                            <!-- Slider Item -->
+                            {% for course in courses %}
+                                <div class="owl-item">
+                                    <div class="course">
+                                        <div class="course_image"><img src="{{ asset('images/course_1.jpg') }}" alt="">
+                                        </div>
+                                        <div class="course_body">
+                                            <div class="course_header d-flex flex-row align-items-center justify-content-start">
+                                                <div class="course_tag"><a href="#">Featured</a></div>
+                                                <div class="course_price ml-auto">Price: <span>$35</span>
+                                                </div>
+                                            </div>
+                                            <div class="course_title"><h3><a
+                                                            href="{{ path('app_courses_show', {id:course.id}) }}">{{ course.title }}</a>
+                                                </h3>
+                                            </div>
+                                            <div class="course_text">{{ course.description }}</div>
+                                            <div class="course_footer d-flex align-items-center justify-content-start">
+                                                <div class="course_author_image"><img
+                                                            src="{{ asset('images/featured_author.jpg') }}"
+                                                            alt="https://unsplash.com/@anthonytran"></div>
+                                                <div class="created_at">{{ course.createdAt ? course.createdAt|date('Y-m-d H:i:s') : '' }}</div>
+                                                <div class="course_sales ml-auto"><span>352</span> Sales
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            <!-- Courses Slider Nav -->
+                            <div class="courses_slider_nav courses_slider_prev trans_200"><i class="fa fa-angle-left"
+                                                                                             aria-hidden="true"></i>
+                            </div>
+                            <div class="courses_slider_nav courses_slider_next trans_200"><i class="fa fa-angle-right"
+                                                                                             aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Milestones -->
+    {{ include('shared/_milstone.html.twig') }}
+    <!-- Sections -->
+    {{ include('shared/_sections.html.twig') }}
+
+    <!-- Video -->
+    {{ include('shared/_video.html.twig') }}
+
+    <!-- Join -->
+    {{ include('shared/_join.html.twig') }}
+{% endblock %}
