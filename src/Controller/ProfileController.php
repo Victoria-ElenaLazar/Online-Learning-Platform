@@ -44,7 +44,6 @@ class ProfileController extends AbstractController
 
             if ($image) {
                 $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
 
@@ -55,7 +54,7 @@ class ProfileController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
+                    echo "Something went wrong. Please try again!" . $e->getMessage();
                 }
 
                 // updates the 'pictureFilename' property to store the file name
@@ -95,7 +94,6 @@ class ProfileController extends AbstractController
 
             if ($image) {
                 $originalFilename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
-                // this is needed to safely include the file name as part of the URL
                 $safeFilename = $slugger->slug($originalFilename);
                 $newFilename = $safeFilename . '-' . uniqid() . '.' . $image->guessExtension();
 
@@ -106,7 +104,7 @@ class ProfileController extends AbstractController
                         $newFilename
                     );
                 } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
+                    echo $e->getMessage();
                 }
 
                 // updates the 'pictureFilename' property to store the file name
