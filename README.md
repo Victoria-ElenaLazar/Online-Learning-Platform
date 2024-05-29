@@ -145,6 +145,11 @@ You will have limited access on the Home Page. In order to have full access you 
 - **Create Profile:** Personalize your learning experience by creating a profile that reflects your academic journey.
 
 
+## Project Demo
+
+[Watch the video](public/uploads/OLP.mov)
+
+Or [download the video](public/uploads/OLP.mov) to watch it.
 
 
 
