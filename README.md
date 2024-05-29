@@ -14,19 +14,15 @@ This project helped me to learn and understand how to create and use Symfony Fra
 
 ## Table of Contents
 
--[Features](#features)
-
--[Requirements](#requirements)
-
--[Getting Started](#getting-started)
-
--[Authentication](#authentication)
-
--[Layout](#layout)
+- [Requirements](#requirements)
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Authentication](#authentication)
+- [Layout](#layout)
+- [Project Demo](#project-demo)
 
 
-
-## [Requirements](#requirements)
+## Requirements
 
 - PHP 8.1/8.2
 - [Symfony](https://symfony.com/)
